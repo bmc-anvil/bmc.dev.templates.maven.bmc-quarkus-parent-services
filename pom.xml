@@ -40,12 +40,12 @@
         <enforcer-plugin.version>3.5.0</enforcer-plugin.version>
         <jar-plugin.version>3.4.2</jar-plugin.version>
         <resources-plugin.version>3.3.1</resources-plugin.version>
-        <surefire-plugin.version>3.5.2</surefire-plugin.version>
+        <surefire-plugin.version>3.5.3</surefire-plugin.version>
 
         <!-- Quarkus Config and Versions -->
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.18.3</quarkus.platform.version>
+        <quarkus.platform.version>3.21.2</quarkus.platform.version>
 
         <!-- BMC Config and Versions -->
         <bmc.platform.check-style.artifact-id>bmc-code-style</bmc.platform.check-style.artifact-id>
@@ -53,13 +53,13 @@
         <bmc.platform.group-id>com.bmc.platform</bmc.platform.group-id>
 
         <!-- Versions -->
-        <checkstyle.version>10.21.2</checkstyle.version>
-        <datafaker.version>2.4.2</datafaker.version>
-        <lombok.version>1.18.36</lombok.version>
+        <checkstyle.version>10.23.0</checkstyle.version>
+        <datafaker.version>2.4.3</datafaker.version>
+        <lombok.version>1.18.38</lombok.version>
         <lombok.mapstruct-binding.version>0.2.0</lombok.mapstruct-binding.version>
         <mapstruct.version>1.6.3</mapstruct.version>
-        <wiremock.version>3.11.0</wiremock.version>
-        <wiremock.state-extension.version>0.8.0</wiremock.state-extension.version>
+        <wiremock.version>3.12.1</wiremock.version>
+        <wiremock.state-extension.version>0.8.2</wiremock.state-extension.version>
     </properties>
 
     <!-- dependencyManagement section is the dependencies' alignment for this project's children -->
