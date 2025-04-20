@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bmc.platform</groupId>
     <artifactId>bmc-bom</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <name>BMC-Anvil - Parent POM</name>
     <description>BMC-Anvil - BOM and Build System for all back end projects</description>
+
     <url>https://www.bmc-anvil.com/</url>
 
     <licenses>
@@ -22,6 +24,10 @@
 
     <properties>
         <!-- Keep properties in alphabetical order  -->
+        <!-- BMC Config and Versions -->
+        <bmc-resources.artifact>bmc-code-style</bmc-resources.artifact>
+        <bmc-resources.version>1.0-SNAPSHOT</bmc-resources.version>
+
         <!-- Configuration  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -46,11 +52,6 @@
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
         <quarkus.platform.version>3.21.2</quarkus.platform.version>
-
-        <!-- BMC Config and Versions -->
-        <bmc.platform.check-style.artifact-id>bmc-code-style</bmc.platform.check-style.artifact-id>
-        <bmc.platform.check-style.version>1.0-SNAPSHOT</bmc.platform.check-style.version>
-        <bmc.platform.group-id>com.bmc.platform</bmc.platform.group-id>
 
         <!-- Versions -->
         <checkstyle.version>10.23.0</checkstyle.version>
@@ -82,11 +83,35 @@
                 <scope>import</scope>
             </dependency>
 
-
             <!-- Libraries -->
-
+            <!-- BuildTime Libraries -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-mapstruct-binding</artifactId>
+                <version>${lombok.mapstruct-binding.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
             <!-- test dependencies -->
+            <!-- for test dependencies, the scope is "test"-->
             <dependency>
                 <groupId>org.wiremock</groupId>
                 <artifactId>wiremock</artifactId>
@@ -110,6 +135,7 @@
 
     <!-- the dependencies section is the dependencies' inheritance for this project's children -->
     <!-- the dependencies in this section are automatically imported on the children's poms and will be shared by all inheritors -->
+    <!-- They are used across all projects, don't include one-off requirements -->
     <dependencies>
         <!-- Libraries -->
         <dependency>
@@ -121,26 +147,18 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok-mapstruct-binding</artifactId>
-            <version>${lombok.mapstruct-binding.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
-            <version>${mapstruct.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Observability -->
@@ -188,9 +206,9 @@
                             <version>${checkstyle.version}</version>
                         </dependency>
                         <dependency>
-                            <groupId>${bmc.platform.group-id}</groupId>
-                            <artifactId>${bmc.platform.check-style.artifact-id}</artifactId>
-                            <version>${bmc.platform.check-style.version}</version>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>${bmc-resources.artifact}</artifactId>
+                            <version>${bmc-resources.version}</version>
                         </dependency>
                     </dependencies>
                     <configuration>
@@ -231,6 +249,22 @@
                         </annotationProcessorPaths>
                     </configuration>
                 </plugin>
+                <!--
+                    This dependency plugin and its behavior, creates a cyclic dep with bmc-code-style, meaning that on a fresh local
+                    installation, things will go south.
+                    Comment-out this whole plugin, install this parent project, and there will be no problems after that.
+                    This is not only not ideal but also probably wrong.
+                    The advantage this produces on the bmc-code-style project is that it will pick up the build system, props, etc…
+                    from here, therefore speeding iterations a lot.
+                -->
+                <!--
+                    NOTE: I made an attempt to use maven-scm-plugin.
+                    For that purpose, I created a repo with the desired resources and added the required plumbing here.
+                    It ended up requiring more code and steps to copy resources to where I wanted them that this way.
+                    Additionally, it required connecting to a repo constantly while the current approach will just fetch the jar packaged with the
+                    resources only once as long as nothing changes con code-style jar.
+                    Conclusion: though not ideal, this is a better solution, do not move to a scm solution.
+                -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
@@ -244,16 +278,10 @@
                             </goals>
                             <configuration>
                                 <artifactItems>
-                                    <!-- This plugin and its behavior, creates a cyclic dep with bmc-code-style, meaning that on a fresh local
-                                     installation, things will go south.
-                                    Comment-out this whole plugin, install this parent project, and there will be no problems after that.
-                                    This is not only not ideal but also probably wrong.
-                                    The advantage this produces on the bmc-code-style project is that it will pick up the build system, props, etc…
-                                    from here, therefore speeding iterations a lot-->
                                     <artifactItem>
-                                        <groupId>com.bmc.platform</groupId>
-                                        <artifactId>bmc-code-style</artifactId>
-                                        <version>1.0-SNAPSHOT</version>
+                                        <groupId>${project.groupId}</groupId>
+                                        <artifactId>${bmc-resources.artifact}</artifactId>
+                                        <version>${bmc-resources.version}</version>
                                         <overWrite>true</overWrite>
                                         <outputDirectory>${project.basedir}</outputDirectory>
                                         <includes>**\/*.editorconfig,**\/*.gitignore,**\/*.dockerignore</includes>
@@ -344,20 +372,9 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <groupId>${quarkus.platform.group-id}</groupId>
-                    <artifactId>quarkus-maven-plugin</artifactId>
-                    <version>${quarkus.platform.version}</version>
-                    <extensions>true</extensions>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>build</goal>
-                                <goal>generate-code</goal>
-                                <goal>generate-code-tests</goal>
-                                <goal>native-image-agent</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${jar-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -376,9 +393,20 @@
                     <version>${resources-plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${jar-plugin.version}</version>
+                    <groupId>${quarkus.platform.group-id}</groupId>
+                    <artifactId>quarkus-maven-plugin</artifactId>
+                    <version>${quarkus.platform.version}</version>
+                    <extensions>true</extensions>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>build</goal>
+                                <goal>generate-code</goal>
+                                <goal>generate-code-tests</goal>
+                                <goal>native-image-agent</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -407,12 +435,12 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>${quarkus.platform.group-id}</groupId>
-                <artifactId>quarkus-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>${quarkus.platform.group-id}</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
