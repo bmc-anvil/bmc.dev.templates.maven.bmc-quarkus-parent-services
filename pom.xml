@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.bmc.platform</groupId>
@@ -63,8 +63,10 @@
         <wiremock.state-extension.version>0.8.2</wiremock.state-extension.version>
     </properties>
 
-    <!-- dependencyManagement section is the dependencies' alignment for this project's children -->
-    <!-- and aren't necessarily automatically imported on the children's poms -->
+    <!--
+        DependencyManagement section is the dependencies' alignment for this project's children and aren't necessarily automatically
+        imported on the children's poms.
+    -->
     <dependencyManagement>
         <dependencies>
             <!-- Bill of Materials -->
@@ -133,9 +135,11 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- the dependencies section is the dependencies' inheritance for this project's children -->
-    <!-- the dependencies in this section are automatically imported on the children's poms and will be shared by all inheritors -->
-    <!-- They are used across all projects, don't include one-off requirements -->
+    <!--
+        The dependencies section is the dependencies' inheritance for this project's children.
+        The dependencies in this section are automatically imported on the children's poms and will be shared by all inheritors.
+        They are used across all projects, don't include one-off requirements.
+    -->
     <dependencies>
         <!-- Libraries -->
         <dependency>
@@ -190,8 +194,10 @@
     </dependencies>
 
     <build>
-        <!-- build pluginManagement section is the build plugins' alignment for this project's children -->
-        <!-- they aren't necessarily imported nor executed on the children's poms -->
+        <!--
+            Build pluginManagement section is the build plugins' alignment for this project's children.
+            They aren't necessarily imported nor executed on the children's poms
+        -->
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -411,8 +417,11 @@
             </plugins>
         </pluginManagement>
 
-        <!-- build plugins' section is the build plugins' inheritance for this project's children -->
-        <!-- the plugins in this section are automatically imported and executed (if applicable) on the children's -->
+        <!--
+            Build plugins' section is the build plugins' inheritance for this project's children.
+            The plugins in this section are automatically imported and executed on the inheritors.
+            They are used across all projects, don't include one-off requirements.
+        -->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
