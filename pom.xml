@@ -25,6 +25,7 @@
     <properties>
         <!-- Keep properties in alphabetical order  -->
         <!-- BMC Config and Versions -->
+        <bmc-resources.groupId>com.bmc.platform</bmc-resources.groupId>
         <bmc-resources.artifact>bmc-code-style</bmc-resources.artifact>
         <bmc-resources.version>1.0-SNAPSHOT</bmc-resources.version>
 
@@ -212,7 +213,7 @@
                             <version>${checkstyle.version}</version>
                         </dependency>
                         <dependency>
-                            <groupId>${project.groupId}</groupId>
+                            <groupId>${bmc-resources.groupId}</groupId>
                             <artifactId>${bmc-resources.artifact}</artifactId>
                             <version>${bmc-resources.version}</version>
                         </dependency>
@@ -285,7 +286,7 @@
                             <configuration>
                                 <artifactItems>
                                     <artifactItem>
-                                        <groupId>${project.groupId}</groupId>
+                                        <groupId>${bmc-resources.groupId}</groupId>
                                         <artifactId>${bmc-resources.artifact}</artifactId>
                                         <version>${bmc-resources.version}</version>
                                         <overWrite>true</overWrite>
