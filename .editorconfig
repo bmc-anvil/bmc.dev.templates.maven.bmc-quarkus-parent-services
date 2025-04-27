@@ -11,7 +11,7 @@ insert_final_newline        = true
 max_line_length             = 150
 trim_trailing_whitespace    = true
 ij_formatter_off_tag        = @formatter:off
-ij_formatter_on_tag         = @formatter:on
+ij_formatter_on_tag         = @formatter : on
 ij_formatter_tags_enabled   = true
 ij_smart_tabs               = false
 ij_visual_guides            = 120 , 140
@@ -451,9 +451,6 @@ ij_prototext_spaces_within_braces        = true
 ij_prototext_spaces_within_brackets      = false
 
 [{*.yaml,*.yml}]
-indent_size                                = 2
-ij_continuation_indent_size                = 4
-tab_width                                  = 2
 ij_yaml_align_values_properties            = do_not_align
 ij_yaml_autoinsert_sequence_marker         = true
 ij_yaml_block_mapping_on_new_line          = false
