@@ -571,9 +571,7 @@
         <profile>
             <id>deployable-jar</id>
             <activation>
-                <property>
-                    <name>deployable-jar</name>
-                </property>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <distributionManagement>
                 <repository>
@@ -582,6 +580,10 @@
                     <url>https://maven.pkg.github.com/${github.repository}</url>
                 </repository>
             </distributionManagement>
+            <properties>
+                <maven.source.skip>false</maven.source.skip>
+                <maven.javadoc.skip>false</maven.javadoc.skip>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
