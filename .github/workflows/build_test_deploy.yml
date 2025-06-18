@@ -20,6 +20,10 @@ jobs:
             -   name: Setup Java
                 uses: ./.github/actions/setup-java
 
+            -   name: Monitor Java vendor
+                run: |
+                    java -XshowSettings:properties -version 2>&1 | grep vendor
+
             -   name: Cache Maven dependencies
                 uses: actions/cache@v4
                 with:
