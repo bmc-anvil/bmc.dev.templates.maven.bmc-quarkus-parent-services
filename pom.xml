@@ -5,7 +5,7 @@
 
     <groupId>com.bmc.platform</groupId>
     <artifactId>bmc-bom</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-local</version>
     <packaging>pom</packaging>
 
     <name>BMC-Anvil - Parent POM</name>
@@ -34,20 +34,12 @@
         <url>${project.url}</url>
     </scm>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/${github.repository}</url>
-        </repository>
-    </distributionManagement>
-
     <properties>
         <!-- Keep properties in alphabetical order  -->
         <!-- BMC Config and Versions -->
         <bmc-resources.groupId>com.bmc.platform</bmc-resources.groupId>
         <bmc-resources.artifact>bmc-code-style</bmc-resources.artifact>
-        <bmc-resources.version>1.0-SNAPSHOT</bmc-resources.version>
+        <bmc-resources.version>0.0.1-local</bmc-resources.version>
 
         <!-- Configuration  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -61,10 +53,6 @@
         <maven.compiler.parameters>true</maven.compiler.parameters>
         <maven.compiler.release>23</maven.compiler.release>
         <maven.compiler.proc>full</maven.compiler.proc>
-        <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
-        <maven.javadoc.skip>false</maven.javadoc.skip>
-        <maven.source.attach>true</maven.source.attach>
-        <maven.source.skip>false</maven.source.skip>
         <maven.min.version>3.9.9</maven.min.version>
 
         <!-- Plugins Versions  -->
@@ -83,10 +71,10 @@
         <!-- Quarkus Config and Versions -->
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.21.2</quarkus.platform.version>
+        <quarkus.platform.version>3.23.2</quarkus.platform.version>
 
         <!-- Versions -->
-        <checkstyle.version>10.23.0</checkstyle.version>
+        <checkstyle.version>10.25.0</checkstyle.version>
         <datafaker.version>2.4.3</datafaker.version>
         <lombok.version>1.18.38</lombok.version>
         <lombok.mapstruct-binding.version>0.2.0</lombok.mapstruct-binding.version>
@@ -227,6 +215,15 @@
         <pluginManagement>
             <plugins>
                 <!-- Apache Maven build Plugins -->
+                <!--
+                    This checkstyle plugin and its behavior, creates a cyclic dep with bmc-code-style, meaning that on a fresh local
+                    installation, things will go south.
+                    Comment-out this whole plugin, install this parent project, and there will be no problems after that.
+                    This is not only not ideal but also probably wrong.
+                    The advantage this produces on the bmc-code-style project is that it will pick up the build system, props, etc…
+                    from here, therefore speeding iterations a lot.
+                    -Check note on Dependency plugin-
+                -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
@@ -356,7 +353,7 @@
                                             <!-- commercial vendors to exclude -->
                                             <exclude>Oracle</exclude>
                                             <exclude>IBM</exclude>
-                                            <!-- <exclude>Microsoft</exclude> -->
+                                            <exclude>Microsoft</exclude>
                                             <exclude>SAP</exclude>
                                             <exclude>Huawei</exclude>
                                             <exclude>Amazon Corretto</exclude>
@@ -433,6 +430,8 @@
                         <additionalJOptions>
                             <additionalJOption>-Xdoclint:none</additionalJOption>
                         </additionalJOptions>
+                        <failOnError>false</failOnError>
+                        <skip>false</skip>
                     </configuration>
                     <executions>
                         <execution>
@@ -469,10 +468,14 @@
                             <id>attach-sources</id>
                             <goals>
                                 <goal>jar</goal>
+                                <goal>jar-no-fork</goal>
                             </goals>
                             <phase>package</phase>
                         </execution>
                     </executions>
+                    <configuration>
+                        <attach>true</attach>
+                    </configuration>
                 </plugin>
 
                 <!-- Quarkus build Plugins -->
@@ -560,6 +563,46 @@
                 <skipITs>false</skipITs>
                 <quarkus.native.enabled>true</quarkus.native.enabled>
             </properties>
+        </profile>
+        <!-- This profile is executed to deploy "libraries" or "modules" with corresponding documentation and sources to a given repository. -->
+        <!-- As not every project is a library, this configuration needs not be part of the general configuration. -->
+        <profile>
+            <id>deployable-jar</id>
+            <activation>
+                <property>
+                    <name>deployable-jar</name>
+                </property>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>github</id>
+                    <name>GitHub Packages</name>
+                    <url>https://maven.pkg.github.com/${github.repository}</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
