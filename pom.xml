@@ -51,7 +51,7 @@
 
         <!-- Java / Maven Configuration  -->
         <maven.compiler.parameters>true</maven.compiler.parameters>
-        <maven.compiler.release>23</maven.compiler.release>
+        <maven.compiler.release>24</maven.compiler.release>
         <maven.compiler.proc>full</maven.compiler.proc>
         <maven.min.version>3.9.9</maven.min.version>
 
@@ -379,7 +379,9 @@
                                             <include>OpenJDK</include>
                                             <include>openjdk</include>
                                             <include>GraalVM</include>
-                                            <!-- workaround for missing java.vendor property in OpenJDK -->
+                                            <!-- need to include Oracle as an OSS vendor given they provide a GNU GPL build of the JDK  -->
+                                            <include>Oracle Corporation</include>
+                                            <!-- workaround for missing java.vendor property in some OpenJDK builds-->
                                             <include>N/A</include>
                                         </includes>
                                     </requireJavaVendor>
