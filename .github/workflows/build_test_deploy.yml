@@ -52,7 +52,7 @@ jobs:
                     ./mvnw versions:set -DnewVersion="${{ env.PROJECT_VERSION }}"
 
             -   name: Publish to Github Packages
-                run: ./mvnw deploy -pdeployable-jar
+                run: ./mvnw deploy -Pdeployable-jar
                 env:
                     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
