@@ -29,8 +29,8 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/${github.repository}.git</connection>
-        <developerConnection>scm:git:ssh://github.com:${github.repository}.git</developerConnection>
+        <connection>scm:git:git://github.com/${github.org}/${github.repository}.git</connection>
+        <developerConnection>scm:git:ssh://github.com:${github.org}/${github.repository}.git</developerConnection>
         <url>${project.url}</url>
     </scm>
 
@@ -48,9 +48,10 @@
 
         <!-- GitHub Repositories -->
         <github.packages.id>github</github.packages.id>
-        <github.packages.name>BMC Anvil GitHub Packages</github.packages.name>
-        <github.packages.url>https://maven.pkg.github.com/bmc-anvil/packages</github.packages.url>
-        <github.repository>bmc-anvil/${project.artifactId}</github.repository>
+        <github.packages.name>GitHub Packages</github.packages.name>
+        <github.packages.base-url>https://maven.pkg.github.com/</github.packages.base-url>
+        <github.org>bmc-anvil</github.org>
+        <github.repository>${project.artifactId}</github.repository>
 
         <!-- Java / Maven Configuration  -->
         <maven.compiler.parameters>true</maven.compiler.parameters>
@@ -94,7 +95,7 @@
         <repository>
             <id>${github.packages.id}</id>
             <name>${github.packages.name}</name>
-            <url>${github.packages.url}</url>
+            <url>${github.packages.base-url}/${github.org}/*</url>
         </repository>
     </repositories>
 
@@ -596,7 +597,7 @@
                 <repository>
                     <id>${github.packages.id}</id>
                     <name>${github.packages.name}</name>
-                    <url>${github.packages.url}</url>
+                    <url>${github.packages.base-url}/${github.org}/${github.repository}</url>
                 </repository>
             </distributionManagement>
             <build>
