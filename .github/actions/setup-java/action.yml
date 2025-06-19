@@ -24,5 +24,10 @@ runs:
             with:
                 distribution: 'jdkfile'
                 jdkFile: ${{ runner.temp }}/java_package.tar.gz
-                java-version: '23.0.2'
+                java-version: '24.0.1'
                 architecture: x64
+
+        -   name: Monitor Java vendor
+            shell: bash
+            run: |
+                java -XshowSettings:properties -version 2>&1 | grep vendor

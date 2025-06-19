@@ -50,11 +50,14 @@
         <github.repository>bmc-anvil/${project.artifactId}</github.repository>
 
         <!-- GitHub Packages Repositories -->
-        <repository.gh.id>github</repository.gh.id>
         <repository.gh.slug>https://maven.pkg.github.com/bmc-anvil/</repository.gh.slug>
-        <repository.bmc-bom.url>${repository.gh.slug}bmc-bom</repository.bmc-bom.url>
-        <repository.bmc-code-style.url>${repository.gh.slug}bmc-code-style</repository.bmc-code-style.url>
-        <repository.bmc-logging-json.url>${repository.gh.slug}bmc-logging-json</repository.bmc-logging-json.url>
+
+        <repository.bmc-bom.id>bmc-bom</repository.bmc-bom.id>
+        <repository.bmc-bom.url>${repository.gh.slug}${repository.bmc-bom.id}</repository.bmc-bom.url>
+        <repository.bmc-code-style.id>bmc-code-style</repository.bmc-code-style.id>
+        <repository.bmc-code-style.url>${repository.gh.slug}${repository.bmc-code-style.id}</repository.bmc-code-style.url>
+        <repository.bmc-logging-json.id>bmc-logging-json</repository.bmc-logging-json.id>
+        <repository.bmc-logging-json.url>${repository.gh.slug}${repository.bmc-logging-json.id}</repository.bmc-logging-json.url>
 
         <!-- Java / Maven Configuration  -->
         <maven.compiler.parameters>true</maven.compiler.parameters>
@@ -96,18 +99,18 @@
      -->
     <repositories>
         <repository>
-            <id>${repository.gh.id}</id>
-            <name>bmc-bom</name>
+            <id>${repository.bmc-bom.id}</id>
+            <name>${repository.bmc-bom.id}</name>
             <url>${repository.bmc-bom.url}</url>
         </repository>
         <repository>
-            <id>${repository.gh.id}</id>
-            <name>bmc-code-style</name>
+            <id>${repository.bmc-code-style.id}</id>
+            <name>${repository.bmc-code-style.id}</name>
             <url>${repository.bmc-code-style.url}</url>
         </repository>
         <repository>
-            <id>${repository.gh.id}</id>
-            <name>bmc-logging-json</name>
+            <id>${repository.bmc-logging-json.id}</id>
+            <name>${repository.bmc-logging-json.id}</name>
             <url>${repository.bmc-logging-json.url}</url>
         </repository>
     </repositories>

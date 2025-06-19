@@ -46,31 +46,12 @@ jobs:
             -   name: Setup Java
                 uses: ./.github/actions/setup-java
 
-            -   name: Configure GitHub Packages Repository credentials for Maven
-                run: |
-                    mkdir -p ~/.m2
-                    cat > ~/.m2/settings.xml <<EOF
-                    <settings>
-                        <servers>
-                            <server>
-                                <id>github</id>
-                                <username>${USERNAME}</username>
-                                <password>${TOKEN}</password>
-                            </server>
-                        </servers>
-                    </settings>
-                    EOF
-                env:
-                    USERNAME: ${{ secrets.PACKAGES_USER }}
-                    TOKEN: ${{ secrets.PACKAGES_TOKEN_RO }}
+            -   name: Setup Maven
+                uses: ./.github/actions/setup-maven
 
-            -   name: Cache Maven dependencies
-                uses: actions/cache@v4
-                with:
-                    path: ~/.m2
-                    key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-                    restore-keys: |
-                        ${{ runner.os }}-maven-
+            -   name: Build and Test
+                continue-on-error: true
+                run: ./mvnw clean verify
 
             -   name: build and test
                 continue-on-error: true

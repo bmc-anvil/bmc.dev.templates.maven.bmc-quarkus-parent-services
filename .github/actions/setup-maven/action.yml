@@ -1,0 +1,58 @@
+name: 'Setup Maven'
+description: 'Setup cache, Repositories Credentials and Project Version in pom'
+
+runs:
+    using: "composite"
+    steps:
+        -   name: Configure GitHub Packages Repository credentials for Maven
+            shell: bash
+            run: |
+                mkdir -p ~/.m2
+                cat > ~/.m2/settings.xml <<EOF
+                <settings>
+                    <servers>
+                        <server>
+                            <id>bmc-bom</id>
+                            <username>${PACKAGES_USER}</username>
+                            <password>${PACKAGES_TOKEN_RO}</password>
+                        </server>
+                        <server>
+                            <id>bmc-code-style</id>
+                            <username>${PACKAGES_USER}</username>
+                            <password>${PACKAGES_TOKEN_RO}</password>
+                        </server>
+                        <server>
+                            <id>bmc-logging-json</id>
+                            <username>${PACKAGES_USER}</username>
+                            <password>${PACKAGES_TOKEN_RO}</password>
+                        </server>
+                    </servers>
+                </settings>
+                EOF
+            env:
+                USERNAME: ${{ secrets.PACKAGES_USER }}
+                TOKEN: ${{ secrets.PACKAGES_TOKEN_RO }}
+
+        -   name: Cache Maven dependencies
+            uses: actions/cache@v4
+            with:
+                path: ~/.m2
+                key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+                restore-keys: |
+                    ${{ runner.os }}-maven-
+
+        -   name: version setup (Tag or Commit Hash)
+            shell: bash
+            run: |
+                TAG=$(git describe --tags --exact-match 2>/dev/null || echo "")
+                if [ -z "$TAG" ]; then
+                  GIT_HASH=$(git rev-parse --short HEAD)
+                  echo "PROJECT_VERSION=$GIT_HASH" >> $GITHUB_ENV
+                else
+                  echo "PROJECT_VERSION=$TAG" >> $GITHUB_ENV
+                fi
+
+        -   name: Update Maven version with Git tag or hash
+            shell: bash
+            run: |
+                ./mvnw versions:set -DnewVersion="${{ env.PROJECT_VERSION }}"
