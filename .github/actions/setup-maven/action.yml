@@ -1,6 +1,14 @@
 name: 'Setup Maven'
 description: 'Setup cache, Repositories Credentials and Project Version in pom'
 
+inputs:
+    packages_user:
+        required: true
+        description: 'packages user from workflow'
+    packages_token_ro:
+        required: true
+        description: 'read-only packages token from workflow'
+
 runs:
     using: "composite"
     steps:
@@ -13,25 +21,25 @@ runs:
                     <servers>
                         <server>
                             <id>bmc-bom</id>
-                            <username>${PACKAGES_USER}</username>
-                            <password>${PACKAGES_TOKEN_RO}</password>
+                            <username>${USERNAME}</username>
+                            <password>${TOKEN}</password>
                         </server>
                         <server>
                             <id>bmc-code-style</id>
-                            <username>${PACKAGES_USER}</username>
-                            <password>${PACKAGES_TOKEN_RO}</password>
+                            <username>${USERNAME}</username>
+                            <password>${TOKEN}</password>
                         </server>
                         <server>
                             <id>bmc-logging-json</id>
-                            <username>${PACKAGES_USER}</username>
-                            <password>${PACKAGES_TOKEN_RO}</password>
+                            <username>${USERNAME}</username>
+                            <password>${TOKEN}</password>
                         </server>
                     </servers>
                 </settings>
                 EOF
             env:
-                USERNAME: ${{ secrets.PACKAGES_USER }}
-                TOKEN: ${{ secrets.PACKAGES_TOKEN_RO }}
+                USERNAME: ${{ inputs.packages_user }}
+                TOKEN: ${{ inputs.packages_token_ro }}
 
         -   name: Cache Maven dependencies
             uses: actions/cache@v4
