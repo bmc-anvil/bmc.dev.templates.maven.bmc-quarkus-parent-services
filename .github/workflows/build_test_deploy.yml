@@ -24,7 +24,7 @@ jobs:
                 uses: ./.github/actions/setup-maven
                 with:
                     packages_user: ${{secrets.PACKAGES_USER}}
-                    packages_token_ro: ${{secrets.PACKAGES_TOKEN_RO}}
+                    packages_token_rw: ${{secrets.PACKAGES_TOKEN_RW}}
 
             -   name: Build and Test
                 continue-on-error: true

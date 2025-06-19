@@ -5,9 +5,9 @@ inputs:
     packages_user:
         required: true
         description: 'packages user from workflow'
-    packages_token_ro:
+    packages_token_rw:
         required: true
-        description: 'read-only packages token from workflow'
+        description: 'read-write packages token from workflow'
 
 runs:
     using: "composite"
@@ -20,17 +20,7 @@ runs:
                 <settings>
                     <servers>
                         <server>
-                            <id>bmc-bom</id>
-                            <username>${USERNAME}</username>
-                            <password>${TOKEN}</password>
-                        </server>
-                        <server>
-                            <id>bmc-code-style</id>
-                            <username>${USERNAME}</username>
-                            <password>${TOKEN}</password>
-                        </server>
-                        <server>
-                            <id>bmc-logging-json</id>
+                            <id>github</id>
                             <username>${USERNAME}</username>
                             <password>${TOKEN}</password>
                         </server>
@@ -39,7 +29,7 @@ runs:
                 EOF
             env:
                 USERNAME: ${{ inputs.packages_user }}
-                TOKEN: ${{ inputs.packages_token_ro }}
+                TOKEN: ${{ inputs.packages_token_rw }}
 
         -   name: Cache Maven dependencies
             uses: actions/cache@v4
