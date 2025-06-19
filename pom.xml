@@ -49,7 +49,7 @@
         <!-- GitHub Repositories -->
         <github.packages.id>github</github.packages.id>
         <github.packages.name>GitHub Packages</github.packages.name>
-        <github.packages.base-url>https://maven.pkg.github.com/</github.packages.base-url>
+        <github.packages.base-url>https://maven.pkg.github.com</github.packages.base-url>
         <github.org>bmc-anvil</github.org>
         <github.repository>${project.artifactId}</github.repository>
 
