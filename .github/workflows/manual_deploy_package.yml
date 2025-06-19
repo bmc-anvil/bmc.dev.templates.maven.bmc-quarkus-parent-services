@@ -56,10 +56,6 @@ jobs:
                 continue-on-error: true
                 run: ./mvnw clean verify
 
-            -   name: build and test
-                continue-on-error: true
-                run: ./mvnw clean verify
-
             -   name: Update Maven version
                 run: |
                     ./mvnw versions:set -DnewVersion="${{ env.SELECTED_VERSION }}"
