@@ -49,6 +49,13 @@
         <!-- GitHub Repository -->
         <github.repository>bmc-anvil/${project.artifactId}</github.repository>
 
+        <!-- GitHub Packages Repositories -->
+        <repository.gh.id>github</repository.gh.id>
+        <repository.gh.slug>https://maven.pkg.github.com/bmc-anvil/</repository.gh.slug>
+        <repository.bmc-bom.url>${repository.gh.slug}bmc-bom</repository.bmc-bom.url>
+        <repository.bmc-code-style.url>${repository.gh.slug}bmc-code-style</repository.bmc-code-style.url>
+        <repository.bmc-logging-json.url>${repository.gh.slug}bmc-logging-json</repository.bmc-logging-json.url>
+
         <!-- Java / Maven Configuration  -->
         <maven.compiler.parameters>true</maven.compiler.parameters>
         <maven.compiler.release>24</maven.compiler.release>
@@ -82,6 +89,28 @@
         <wiremock.version>3.12.1</wiremock.version>
         <wiremock.state-extension.version>0.8.2</wiremock.state-extension.version>
     </properties>
+
+    <!--
+     These repositories can be moved to a settings.xml file, but that approach will not work in pipelines as long as
+     the packages are hosted on GitHub
+     -->
+    <repositories>
+        <repository>
+            <id>${repository.gh.id}</id>
+            <name>bmc-bom</name>
+            <url>${repository.bmc-bom.url}</url>
+        </repository>
+        <repository>
+            <id>${repository.gh.id}</id>
+            <name>bmc-code-style</name>
+            <url>${repository.bmc-code-style.url}</url>
+        </repository>
+        <repository>
+            <id>${repository.gh.id}</id>
+            <name>bmc-logging-json</name>
+            <url>${repository.bmc-logging-json.url}</url>
+        </repository>
+    </repositories>
 
     <!--
         DependencyManagement section is the dependencies' alignment for this project's children and aren't necessarily automatically
