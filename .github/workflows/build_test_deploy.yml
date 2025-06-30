@@ -10,33 +10,7 @@ on:
 
 jobs:
     build-test-deploy:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            packages: write
-
-        steps:
-            -   name: checkout the repository
-                uses: actions/checkout@v4
-
-            -   name: Setup Java
-                uses: ./.github/actions/setup-java
-
-            -   name: Setup Maven
-                uses: ./.github/actions/setup-maven
-                with:
-                    packages_user: ${{secrets.PACKAGES_USER}}
-                    packages_token: ${{secrets.PACKAGES_TOKEN_RW}}
-
-            -   name: Build and Test
-                continue-on-error: true
-                run: ./mvnw clean verify
-
-            -   name: Publish to Github Packages
-                run: ./mvnw deploy -Pdeployable-jar
-                env:
-                    GITHUB_TOKEN: ${{ secrets.PACKAGES_TOKEN_RW }}
-
-#               momentarily deactivate quality gate
-#            -   name: Run Code Quality Check
-#                uses: ./.github/actions/code-quality
+        uses: bmc-anvil/bmc-devops/blob/master/.github/workflows/build_test_deploy.yml
+        secrets:
+            packages_user: ${{secrets.PACKAGES_USER}}
+            packages_token: ${{secrets.PACKAGES_TOKEN_RW}}
