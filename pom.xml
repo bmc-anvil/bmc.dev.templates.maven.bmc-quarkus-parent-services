@@ -251,14 +251,9 @@
                             <artifactId>checkstyle</artifactId>
                             <version>${checkstyle.version}</version>
                         </dependency>
-                        <dependency>
-                            <groupId>${bmc-resources.groupId}</groupId>
-                            <artifactId>${bmc-resources.artifact}</artifactId>
-                            <version>${bmc-resources.version}</version>
-                        </dependency>
                     </dependencies>
                     <configuration>
-                        <configLocation>checkstyle.xml</configLocation>
+                        <configLocation>${project.basedir}/checkstyle.xml</configLocation>
                         <excludeGeneratedSources>true</excludeGeneratedSources>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         <inputEncoding>UTF-8</inputEncoding>
@@ -336,7 +331,7 @@
                                         <version>${bmc-resources.version}</version>
                                         <overWrite>true</overWrite>
                                         <outputDirectory>${project.basedir}</outputDirectory>
-                                        <includes>**\/*.editorconfig,**\/*.gitignore,**\/*.dockerignore</includes>
+                                        <includes>**\/*.editorconfig,**\/*.gitignore,**\/*.dockerignore,**\/checkstyle.xml</includes>
                                     </artifactItem>
                                 </artifactItems>
                             </configuration>
