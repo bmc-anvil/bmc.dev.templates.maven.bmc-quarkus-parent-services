@@ -39,7 +39,7 @@
         <!-- BMC Config and Versions -->
         <bmc-resources.groupId>com.bmc.platform</bmc-resources.groupId>
         <bmc-resources.artifact>bmc-code-style</bmc-resources.artifact>
-        <bmc-resources.version>0.1.1-experimental</bmc-resources.version>
+        <bmc-resources.version>0.1.3-experimental</bmc-resources.version>
 
         <!-- Configuration  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -75,10 +75,10 @@
         <!-- Quarkus Config and Versions -->
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.23.2</quarkus.platform.version>
+        <quarkus.platform.version>3.24.1</quarkus.platform.version>
 
         <!-- Versions -->
-        <checkstyle.version>10.25.0</checkstyle.version>
+        <checkstyle.version>10.26.1</checkstyle.version>
         <datafaker.version>2.4.3</datafaker.version>
         <lombok.version>1.18.38</lombok.version>
         <lombok.mapstruct-binding.version>0.2.0</lombok.mapstruct-binding.version>
