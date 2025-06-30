@@ -12,5 +12,5 @@ jobs:
     build-test-deploy:
         uses: bmc-anvil/bmc-devops/.github/workflows/build_test_deploy.yml@master
         secrets:
-            packages_user: ${{secrets.PACKAGES_USER}}
-            packages_token: ${{secrets.PACKAGES_TOKEN_RW}}
+            PACKAGES_USER: ${{secrets.PACKAGES_USER}}
+            PACKAGES_TOKEN_RW: ${{secrets.PACKAGES_TOKEN_RW}}
