@@ -19,6 +19,7 @@ jobs:
         secrets:
             PACKAGES_USER: ${{secrets.PACKAGES_USER}}
             PACKAGES_TOKEN_RW: ${{secrets.PACKAGES_TOKEN_RW}}
+            GH_TOKEN: ${{ github.token }}
         permissions:
             contents: read
             packages: write
