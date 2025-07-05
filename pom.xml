@@ -254,7 +254,7 @@
                     </dependencies>
                     <configuration>
                         <configLocation>${project.basedir}/checkstyle.xml</configLocation>
-                        <outputFile>${project.build.directory}/checkstyle-results.sarif</outputFile>
+                        <outputFile>${project.build.directory}/checkstyle-result.sarif</outputFile>
                         <outputFileFormat>sarif</outputFileFormat>
                         <excludeGeneratedSources>true</excludeGeneratedSources>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
