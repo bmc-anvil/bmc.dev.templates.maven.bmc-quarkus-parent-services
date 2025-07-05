@@ -233,7 +233,7 @@
                 <!-- Apache Maven build Plugins -->
                 <!--
                     This checkstyle plugin and its behavior, creates a cyclic dep with bmc-code-style, meaning that on a fresh local
-                    installation, things will go south.
+                    installation, things will go south as the checkstyle.xml file has not been retrieved yet from the code style repo.
                     Comment-out this whole plugin, install this parent project, and there will be no problems after that.
                     This is not only not ideal but also probably wrong.
                     The advantage this produces on the bmc-code-style project is that it will pick up the build system, props, etc…
@@ -254,12 +254,13 @@
                     </dependencies>
                     <configuration>
                         <configLocation>${project.basedir}/checkstyle.xml</configLocation>
+                        <outputFile>${project.build.directory}/checkstyle-results.sarif</outputFile>
+                        <outputFileFormat>sarif</outputFileFormat>
                         <excludeGeneratedSources>true</excludeGeneratedSources>
                         <includeTestSourceDirectory>true</includeTestSourceDirectory>
                         <inputEncoding>UTF-8</inputEncoding>
                         <outputEncoding>UTF-8</outputEncoding>
                         <consoleOutput>true</consoleOutput>
-                        <failsOnError>true</failsOnError>
                         <linkXRef>false</linkXRef>
                     </configuration>
                 </plugin>
