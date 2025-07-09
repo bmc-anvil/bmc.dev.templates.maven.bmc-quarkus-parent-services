@@ -88,18 +88,6 @@
     </properties>
 
     <!--
-     These repositories can be moved to a settings.xml file, but that approach will not work in pipelines as long as
-     the packages are hosted on GitHub
-     -->
-    <repositories>
-        <repository>
-            <id>${github.packages.id}</id>
-            <name>${github.packages.name}</name>
-            <url>${github.packages.base-url}/${github.org}/*</url>
-        </repository>
-    </repositories>
-
-    <!--
         DependencyManagement section is the dependencies' alignment for this project's children and aren't necessarily automatically
         imported on the children's poms.
     -->
