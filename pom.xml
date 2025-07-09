@@ -39,7 +39,7 @@
         <!-- BMC Config and Versions -->
         <bmc-resources.groupId>com.bmc.platform</bmc-resources.groupId>
         <bmc-resources.artifact>bmc-code-style</bmc-resources.artifact>
-        <bmc-resources.version>0.1.3-experimental</bmc-resources.version>
+        <bmc-resources.version>0.2.0-experimental</bmc-resources.version>
 
         <!-- Configuration  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,7 +64,7 @@
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
         <dependency-plugin.version>3.8.1</dependency-plugin.version>
         <deploy-plugin.version>3.1.3</deploy-plugin.version>
-        <enforcer-plugin.version>3.5.0</enforcer-plugin.version>
+        <enforcer-plugin.version>3.6.0</enforcer-plugin.version>
         <failsafe-plugin.version>${surefire-plugin.version}</failsafe-plugin.version>
         <jar-plugin.version>3.4.2</jar-plugin.version>
         <javadoc-plugin.version>3.11.2</javadoc-plugin.version>
@@ -75,7 +75,7 @@
         <!-- Quarkus Config and Versions -->
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.24.1</quarkus.platform.version>
+        <quarkus.platform.version>3.24.3</quarkus.platform.version>
 
         <!-- Versions -->
         <checkstyle.version>10.26.1</checkstyle.version>
