@@ -40,6 +40,8 @@
         <bmc-resources.groupId>com.bmc.platform</bmc-resources.groupId>
         <bmc-resources.artifact>bmc-code-style</bmc-resources.artifact>
         <bmc-resources.version>0.2.0-experimental</bmc-resources.version>
+        <bmc-resources.checkstyle>https://raw.githubusercontent.com/bmc-anvil/bmc-code-style/refs/heads/master/src/main/resources/checkstyle.xml
+        </bmc-resources.checkstyle>
 
         <!-- Configuration  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -241,7 +243,8 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <configLocation>${project.basedir}/checkstyle.xml</configLocation>
+                        <configLocation>${bmc-resources.checkstyle}</configLocation>
+                        <cacheFile>${project.basedir}/checkstyle.xml</cacheFile>
                         <outputFile>${project.build.directory}/checkstyle-result.sarif</outputFile>
                         <outputFileFormat>sarif</outputFileFormat>
                         <excludeGeneratedSources>true</excludeGeneratedSources>
@@ -298,7 +301,7 @@
                     For that purpose, I created a repo with the desired resources and added the required plumbing here.
                     It ended up requiring more code and steps to copy resources to where I wanted them that this way.
                     Additionally, it required connecting to a repo constantly while the current approach will just fetch the jar packaged with the
-                    resources only once as long as nothing changes con code-style jar.
+                    resources only once as long as nothing changes on code-style jar.
                     Conclusion: though not ideal, this is a better solution, do not move to a scm solution.
                 -->
                 <plugin>
@@ -320,7 +323,7 @@
                                         <version>${bmc-resources.version}</version>
                                         <overWrite>true</overWrite>
                                         <outputDirectory>${project.basedir}</outputDirectory>
-                                        <includes>**\/*.editorconfig,**\/*.gitignore,**\/*.dockerignore,**\/checkstyle.xml</includes>
+                                        <includes>**\/*.editorconfig,**\/*.gitignore,**\/*.dockerignore</includes>
                                     </artifactItem>
                                 </artifactItems>
                             </configuration>
