@@ -40,8 +40,6 @@
         <bmc-resources.groupId>com.bmc.platform</bmc-resources.groupId>
         <bmc-resources.artifact>bmc-code-style</bmc-resources.artifact>
         <bmc-resources.version>0.2.0-experimental</bmc-resources.version>
-        <bmc-resources.checkstyle>https://raw.githubusercontent.com/bmc-anvil/bmc-code-style/refs/heads/master/src/main/resources/checkstyle.xml
-        </bmc-resources.checkstyle>
 
         <!-- Configuration  -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -243,8 +241,7 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <configLocation>${bmc-resources.checkstyle}</configLocation>
-                        <cacheFile>${project.basedir}/checkstyle.xml</cacheFile>
+                        <configLocation>${project.basedir}/checkstyle.xml</configLocation>
                         <outputFile>${project.build.directory}/checkstyle-result.sarif</outputFile>
                         <outputFileFormat>sarif</outputFileFormat>
                         <excludeGeneratedSources>true</excludeGeneratedSources>
@@ -323,7 +320,7 @@
                                         <version>${bmc-resources.version}</version>
                                         <overWrite>true</overWrite>
                                         <outputDirectory>${project.basedir}</outputDirectory>
-                                        <includes>**\/*.editorconfig,**\/*.gitignore,**\/*.dockerignore</includes>
+                                        <includes>**\/*.editorconfig,**\/*.gitignore,**\/*.dockerignore,**\/checkstyle.xml</includes>
                                     </artifactItem>
                                 </artifactItems>
                             </configuration>
