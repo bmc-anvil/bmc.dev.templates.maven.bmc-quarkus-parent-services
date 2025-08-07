@@ -3,82 +3,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.bmc.platform</groupId>
-    <artifactId>bmc-bom</artifactId>
+    <parent>
+        <groupId>bmc.dev.templates.maven</groupId>
+        <artifactId>bmc-parent</artifactId>
+        <version>0.0.1-local</version>
+    </parent>
+
+    <artifactId>quarkus-parent</artifactId>
     <version>0.0.1-local</version>
     <packaging>pom</packaging>
 
-    <name>BMC-Anvil - Parent POM</name>
-    <description>BMC-Anvil - BOM and Build System for all back end projects</description>
+    <name>BMC - Quarkus Parent POM</name>
+    <description>BMC - BOM and Build System for Quarkus back end projects</description>
     <url>https://www.bmc-anvil.com/</url>
-
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>BareMetalCode Devs</name>
-            <organization>BareMetalCode</organization>
-            <organizationUrl>https://www.baremetalcode.com/</organizationUrl>
-        </developer>
-    </developers>
-
-    <scm>
-        <connection>scm:git:git://github.com/${github.org}/${github.repository}.git</connection>
-        <developerConnection>scm:git:ssh://github.com:${github.org}/${github.repository}.git</developerConnection>
-        <url>${project.url}</url>
-    </scm>
 
     <properties>
         <!-- Keep properties in alphabetical order  -->
-        <!-- BMC Config and Versions -->
-        <bmc-resources.groupId>com.bmc.platform</bmc-resources.groupId>
-        <bmc-resources.artifact>bmc-code-style</bmc-resources.artifact>
-        <bmc-resources.version>0.3.1-experimental</bmc-resources.version>
-
-        <!-- Configuration  -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <skipITs>true</skipITs>
-
-        <!-- GitHub Repositories -->
-        <github.packages.id>github</github.packages.id>
-        <github.packages.name>GitHub Packages</github.packages.name>
-        <github.packages.base-url>https://maven.pkg.github.com</github.packages.base-url>
-        <github.org>bmc-anvil</github.org>
-        <github.repository>${project.artifactId}</github.repository>
-
-        <!-- Java / Maven Configuration  -->
-        <maven.compiler.parameters>true</maven.compiler.parameters>
-        <maven.compiler.release>24</maven.compiler.release>
-        <maven.compiler.proc>full</maven.compiler.proc>
-        <maven.min.version>3.9.9</maven.min.version>
-
-        <!-- Plugins Versions  -->
-        <checkstyle-plugin.version>3.6.0</checkstyle-plugin.version>
-        <compiler-plugin.version>3.13.0</compiler-plugin.version>
-        <dependency-plugin.version>3.8.1</dependency-plugin.version>
-        <deploy-plugin.version>3.1.3</deploy-plugin.version>
-        <enforcer-plugin.version>3.6.1</enforcer-plugin.version>
-        <failsafe-plugin.version>${surefire-plugin.version}</failsafe-plugin.version>
-        <jar-plugin.version>3.4.2</jar-plugin.version>
-        <javadoc-plugin.version>3.11.2</javadoc-plugin.version>
-        <resources-plugin.version>3.3.1</resources-plugin.version>
-        <source-plugin.version>3.2.1</source-plugin.version>
-        <surefire-plugin.version>3.5.3</surefire-plugin.version>
+        <!-- GitHub Repositories Config-->
+        <github.repository>${project.groupId}.${project.artifactId}</github.repository>
 
         <!-- Quarkus Config and Versions -->
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.24.3</quarkus.platform.version>
+        <quarkus.platform.version>3.25.0</quarkus.platform.version>
 
         <!-- Versions -->
-        <checkstyle.version>10.26.1</checkstyle.version>
+        <bmc-logging-json.version>0.0.1-local</bmc-logging-json.version>
         <datafaker.version>2.4.4</datafaker.version>
         <lombok.version>1.18.38</lombok.version>
         <lombok.mapstruct-binding.version>0.2.0</lombok.mapstruct-binding.version>
@@ -134,6 +84,13 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- Code Infrastructure Dependencies -->
+            <dependency>
+                <groupId>bmc.quarkus.extensions</groupId>
+                <artifactId>bmc-logging-json</artifactId>
+                <version>${bmc-logging-json.version}</version>
             </dependency>
 
             <!-- test dependencies -->
@@ -209,6 +166,11 @@
             <artifactId>quarkus-jacoco</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -218,269 +180,6 @@
         -->
         <pluginManagement>
             <plugins>
-                <!-- Apache Maven build Plugins -->
-                <!--
-                    This checkstyle plugin and its behavior, creates a cyclic dep with bmc-code-style, meaning that on a fresh local
-                    installation, things will go south as the checkstyle.xml file has not been retrieved yet from the code style repo.
-                    Comment-out this whole plugin, install this parent project, and there will be no problems after that.
-                    This is not only not ideal but also probably wrong.
-                    The advantage this produces on the bmc-code-style project is that it will pick up the build system, props, etc…
-                    from here, therefore speeding iterations a lot.
-                    -Check note on Dependency plugin-
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>${checkstyle-plugin.version}</version>
-                    <dependencies>
-                        <!-- use latest checkstyle version-->
-                        <dependency>
-                            <groupId>com.puppycrawl.tools</groupId>
-                            <artifactId>checkstyle</artifactId>
-                            <version>${checkstyle.version}</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        <configLocation>${project.basedir}/checkstyle.xml</configLocation>
-                        <outputFile>${project.build.directory}/checkstyle-result.sarif</outputFile>
-                        <outputFileFormat>sarif</outputFileFormat>
-                        <excludeGeneratedSources>true</excludeGeneratedSources>
-                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                        <inputEncoding>UTF-8</inputEncoding>
-                        <outputEncoding>UTF-8</outputEncoding>
-                        <consoleOutput>true</consoleOutput>
-                        <linkXRef>false</linkXRef>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${compiler-plugin.version}</version>
-                    <configuration>
-                        <parameters>true</parameters>
-                        <!-- Java >=23 requires explicit configuration of annotation processing -->
-                        <!-- without this configuration, Quarkus hot reload will fail -->
-                        <annotationProcessorPaths>
-                            <!-- quarkus-extension-processor: Used by Quarkus extensions -->
-                            <path>
-                                <groupId>io.quarkus</groupId>
-                                <artifactId>quarkus-extension-processor</artifactId>
-                                <version>${quarkus.platform.version}</version>
-                            </path>
-                            <path>
-                                <groupId>org.mapstruct</groupId>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <version>${mapstruct.version}</version>
-                            </path>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok-mapstruct-binding</artifactId>
-                                <version>${lombok.mapstruct-binding.version}</version>
-                            </path>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                    </configuration>
-                </plugin>
-                <!--
-                    This dependency plugin and its behavior, creates a cyclic dep with bmc-code-style, meaning that on a fresh local
-                    installation, things will go south.
-                    Comment-out this whole plugin, install this parent project, and there will be no problems after that.
-                    This is not only not ideal but also probably wrong.
-                    The advantage this produces on the bmc-code-style project is that it will pick up the build system, props, etc…
-                    from here, therefore speeding iterations a lot.
-                -->
-                <!--
-                    NOTE: I made an attempt to use maven-scm-plugin.
-                    For that purpose, I created a repo with the desired resources and added the required plumbing here.
-                    It ended up requiring more code and steps to copy resources to where I wanted them that this way.
-                    Additionally, it required connecting to a repo constantly while the current approach will just fetch the jar packaged with the
-                    resources only once as long as nothing changes on code-style jar.
-                    Conclusion: though not ideal, this is a better solution, do not move to a scm solution.
-                -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>${dependency-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>unpack</id>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>unpack</goal>
-                            </goals>
-                            <configuration>
-                                <artifactItems>
-                                    <artifactItem>
-                                        <groupId>${bmc-resources.groupId}</groupId>
-                                        <artifactId>${bmc-resources.artifact}</artifactId>
-                                        <version>${bmc-resources.version}</version>
-                                        <overWrite>true</overWrite>
-                                        <outputDirectory>${project.basedir}</outputDirectory>
-                                        <includes>**\/*.editorconfig,**\/*.gitignore,**\/*.dockerignore,**\/checkstyle.xml</includes>
-                                    </artifactItem>
-                                </artifactItems>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${deploy-plugin.version}</version>
-                    <configuration>
-                        <deployAtEnd>true</deployAtEnd>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>${enforcer-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>enforce</id>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <requireJavaVendor>
-                                        <!-- java -XshowSettings:properties -version 2>&1 | grep vendor -->
-                                        <excludes>
-                                            <!-- commercial vendors to exclude -->
-                                            <exclude>Oracle</exclude>
-                                            <exclude>IBM</exclude>
-                                            <exclude>Microsoft</exclude>
-                                            <exclude>SAP</exclude>
-                                            <exclude>Huawei</exclude>
-                                            <exclude>Amazon Corretto</exclude>
-                                            <exclude>Oracle JDK</exclude>
-                                            <exclude>Amazon</exclude>
-                                            <exclude>Microsoft Build of OpenJDK</exclude>
-                                            <!-- Azul Zulu might be commercial depending on the version -->
-                                            <exclude>Azul Systems</exclude>
-
-                                            <!-- open-source vendors to exclude -->
-                                            <include>Alibaba Dragonwell</include>
-                                            <include>AdoptOpenJDK</include>
-                                            <include>Temurin</include>
-                                            <include>Eclipse Temurin</include>
-                                            <include>Zulu</include>
-                                            <include>Red Hat</include>
-                                            <include>BellSoft</include>
-                                        </excludes>
-                                        <message>To build this project one of the JDK in the "includes" list has to be used</message>
-                                        <includes>
-                                            <!-- commercial vendors to include: DO NOT include any commercial vendors -->
-                                            <!-- open-source vendors to include -->
-                                            <include>OpenJDK</include>
-                                            <include>openjdk</include>
-                                            <include>GraalVM</include>
-                                            <!-- need to include Oracle as an OSS vendor given they provide a GNU GPL build of the JDK  -->
-                                            <include>Oracle Corporation</include>
-                                            <!-- workaround for missing java.vendor property in some OpenJDK builds-->
-                                            <include>N/A</include>
-                                        </includes>
-                                    </requireJavaVendor>
-                                    <requireJavaVersion>
-                                        <message>To build this project JDK >=${maven.compiler.release} is required. Please install it.</message>
-                                        <version>${maven.compiler.release}</version>
-                                    </requireJavaVersion>
-                                    <requireMavenVersion>
-                                        <message>To build this project Maven >=${maven.min.version} is required. Please install it.</message>
-                                        <version>${maven.min.version}</version>
-                                    </requireMavenVersion>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${failsafe-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>integration-test</goal>
-                                <goal>verify</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                            <maven.home>${maven.home}</maven.home>
-                            <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>${jar-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${javadoc-plugin.version}</version>
-                    <configuration>
-                        <source>${maven.compiler.release}</source>
-                        <doclint>none</doclint>
-                        <additionalJOptions>
-                            <additionalJOption>-Xdoclint:none</additionalJOption>
-                        </additionalJOptions>
-                        <failOnError>false</failOnError>
-                        <skip>false</skip>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>attach-javadocs</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                            <phase>package</phase>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${surefire-plugin.version}</version>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                            <maven.home>${maven.home}</maven.home>
-                        </systemPropertyVariables>
-                        <argLine>--add-opens java.base/java.lang=ALL-UNNAMED</argLine>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>${resources-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>${source-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar</goal>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                            <phase>package</phase>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <attach>true</attach>
-                    </configuration>
-                </plugin>
-
                 <!-- Quarkus build Plugins -->
                 <plugin>
                     <groupId>io.quarkus</groupId>
@@ -526,29 +225,30 @@
             They are used across all projects, don't include one-off requirements.
         -->
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
+            <!-- Apache Maven build Plugins Parent Configuration Override for Quarkus Framework-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- without this configuration, Quarkus hot reload and most likely all compilation will fail -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok.mapstruct-binding.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>${quarkus.platform.group-id}</groupId>
@@ -558,50 +258,6 @@
     </build>
 
     <profiles>
-        <!-- This profile is executed to deploy "libraries" or "modules" with corresponding documentation and sources to a given repository. -->
-        <!-- As not every project is a library, this configuration needs not be part of the general configuration. -->
-        <profile>
-            <id>deployable-jar</id>
-            <activation>
-                <property>
-                    <name>deployable-jar</name>
-                </property>
-            </activation>
-            <properties>
-                <maven.source.skip>false</maven.source.skip>
-                <maven.javadoc.skip>false</maven.javadoc.skip>
-            </properties>
-            <distributionManagement>
-                <repository>
-                    <id>${github.packages.id}</id>
-                    <name>${github.packages.name}</name>
-                    <url>${github.packages.base-url}/${github.org}/${github.repository}</url>
-                </repository>
-            </distributionManagement>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skipTests>true</skipTests>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>native</id>
             <activation>
@@ -613,6 +269,82 @@
                 <skipITs>false</skipITs>
                 <quarkus.native.enabled>true</quarkus.native.enabled>
             </properties>
+        </profile>
+        <!--
+            Profile to be used by Quarkus services in general:
+
+        -->
+        <profile>
+            <id>quarkus-service</id>
+            <activation>
+                <property>
+                    <name>quarkus-service</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>bmc.quarkus.extensions</groupId>
+                    <artifactId>bmc-logging-json</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <!--
+            Profile to be used by Quarkus extensions:
+            Setting this profile in a quarkus-extension project should be done by configuring it in a maven.config file inside the .mvn folder.
+            This way there is no need to pass arguments or manually configure anything while developing or in pipelines.
+        -->
+        <profile>
+            <id>quarkus-extension</id>
+            <activation>
+                <property>
+                    <name>quarkus-extension</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <!-- without this configuration, Quarkus hot reload and most likely all compilation will fail -->
+                            <annotationProcessorPaths>
+                                <!-- quarkus-extension-processor: Used by Quarkus extensions -->
+                                <path>
+                                    <groupId>io.quarkus</groupId>
+                                    <artifactId>quarkus-extension-processor</artifactId>
+                                    <version>${quarkus.platform.version}</version>
+                                </path>
+                                <path>
+                                    <groupId>org.mapstruct</groupId>
+                                    <artifactId>mapstruct-processor</artifactId>
+                                    <version>${mapstruct.version}</version>
+                                </path>
+                                <path>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok-mapstruct-binding</artifactId>
+                                    <version>${lombok.mapstruct-binding.version}</version>
+                                </path>
+                                <path>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok</artifactId>
+                                    <version>${lombok.version}</version>
+                                </path>
+                            </annotationProcessorPaths>
+                        </configuration>
+                    </plugin>
+                    <!-- This plugin needs to be skipped as it will break quarkus-extensions. -->
+                    <plugin>
+                        <groupId>${quarkus.platform.group-id}</groupId>
+                        <artifactId>quarkus-maven-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                            <skipSourceGeneration>true</skipSourceGeneration>
+                            <quarkus.prepare.skip>true</quarkus.prepare.skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>
