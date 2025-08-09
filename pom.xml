@@ -9,7 +9,7 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>quarkus-parent</artifactId>
+    <artifactId>bmc-quarkus-parent</artifactId>
     <version>0.0.1-local</version>
     <packaging>pom</packaging>
 
