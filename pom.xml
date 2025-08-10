@@ -6,7 +6,7 @@
     <parent>
         <groupId>bmc.dev.templates.maven</groupId>
         <artifactId>bmc-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <artifactId>bmc-quarkus-parent</artifactId>
@@ -25,7 +25,7 @@
         <!-- Quarkus Config and Versions -->
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>3.25.0</quarkus.platform.version>
+        <quarkus.platform.version>3.25.2</quarkus.platform.version>
 
         <!-- Versions -->
         <bmc-logging-json.version>0.0.1-local</bmc-logging-json.version>
