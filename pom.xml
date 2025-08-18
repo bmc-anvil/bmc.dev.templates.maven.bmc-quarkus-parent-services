@@ -9,7 +9,7 @@
         <version>90a7f31</version>
     </parent>
 
-    <artifactId>bmc-quarkus-parent</artifactId>
+    <artifactId>bmc-quarkus-parent-services</artifactId>
     <version>bmc-local</version>
     <packaging>pom</packaging>
 
@@ -28,6 +28,7 @@
         <quarkus.platform.version>3.25.2</quarkus.platform.version>
 
         <!-- Versions -->
+        <bmc-logging-json.version>1.2.0</bmc-logging-json.version>
         <datafaker.version>2.4.4</datafaker.version>
         <lombok.version>1.18.38</lombok.version>
         <lombok.mapstruct-binding.version>0.2.0</lombok.mapstruct-binding.version>
@@ -83,6 +84,13 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- Code Infrastructure Dependencies -->
+            <dependency>
+                <groupId>bmc.quarkus.extensions</groupId>
+                <artifactId>bmc-logging-json</artifactId>
+                <version>${bmc-logging-json.version}</version>
             </dependency>
 
             <!-- test dependencies -->
@@ -151,6 +159,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-config-yaml</artifactId>
         </dependency>
+        <dependency>
+            <groupId>bmc.quarkus.extensions</groupId>
+            <artifactId>bmc-logging-json</artifactId>
+        </dependency>
 
         <!-- Test Dependencies -->
         <dependency>
@@ -173,22 +185,6 @@
         <pluginManagement>
             <plugins>
                 <!-- Quarkus build Plugins -->
-                <plugin>
-                    <groupId>io.quarkus</groupId>
-                    <artifactId>quarkus-extension-maven-plugin</artifactId>
-                    <version>${quarkus.platform.version}</version>
-                    <executions>
-                        <execution>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>extension-descriptor</goal>
-                            </goals>
-                            <configuration>
-                                <deployment>${project.groupId}:${project.artifactId}-deployment:${project.version}</deployment>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
                 <plugin>
                     <groupId>${quarkus.platform.group-id}</groupId>
                     <artifactId>quarkus-maven-plugin</artifactId>
@@ -261,86 +257,6 @@
                 <skipITs>false</skipITs>
                 <quarkus.native.enabled>true</quarkus.native.enabled>
             </properties>
-        </profile>
-        <!--
-            Profile to be used by Quarkus services in general:
-
-        -->
-        <profile>
-            <id>quarkus-service</id>
-            <activation>
-                <property>
-                    <name>quarkus-service</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <properties>
-                <bmc-logging-json.version>1.1.0</bmc-logging-json.version>
-            </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>bmc.quarkus.extensions</groupId>
-                    <artifactId>bmc-logging-json</artifactId>
-                    <version>${bmc-logging-json.version}</version>
-                </dependency>
-            </dependencies>
-        </profile>
-        <!--
-            Profile to be used by Quarkus extensions:
-            Setting this profile in a quarkus-extension project should be done by configuring it in a maven.config file inside the .mvn folder.
-            This way there is no need to pass arguments or manually configure anything while developing or in pipelines.
-        -->
-        <profile>
-            <id>quarkus-extension</id>
-            <activation>
-                <property>
-                    <name>quarkus-extension</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <!-- without this configuration, Quarkus hot reload and most likely all compilation will fail -->
-                            <annotationProcessorPaths>
-                                <!-- quarkus-extension-processor: Used by Quarkus extensions -->
-                                <path>
-                                    <groupId>io.quarkus</groupId>
-                                    <artifactId>quarkus-extension-processor</artifactId>
-                                    <version>${quarkus.platform.version}</version>
-                                </path>
-                                <path>
-                                    <groupId>org.mapstruct</groupId>
-                                    <artifactId>mapstruct-processor</artifactId>
-                                    <version>${mapstruct.version}</version>
-                                </path>
-                                <path>
-                                    <groupId>org.projectlombok</groupId>
-                                    <artifactId>lombok-mapstruct-binding</artifactId>
-                                    <version>${lombok.mapstruct-binding.version}</version>
-                                </path>
-                                <path>
-                                    <groupId>org.projectlombok</groupId>
-                                    <artifactId>lombok</artifactId>
-                                    <version>${lombok.version}</version>
-                                </path>
-                            </annotationProcessorPaths>
-                        </configuration>
-                    </plugin>
-                    <!-- This plugin needs to be skipped as it will break quarkus-extensions. -->
-                    <plugin>
-                        <groupId>${quarkus.platform.group-id}</groupId>
-                        <artifactId>quarkus-maven-plugin</artifactId>
-                        <configuration>
-                            <skip>true</skip>
-                            <skipSourceGeneration>true</skipSourceGeneration>
-                            <quarkus.prepare.skip>true</quarkus.prepare.skip>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
         </profile>
     </profiles>
 </project>
