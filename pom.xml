@@ -6,7 +6,7 @@
     <parent>
         <groupId>bmc.dev.templates.maven</groupId>
         <artifactId>bmc-parent</artifactId>
-        <version>1.4.0</version>
+        <version>0.1.0</version>
     </parent>
 
     <artifactId>bmc-quarkus-parent-services</artifactId>
@@ -29,12 +29,13 @@
 
         <!-- Versions -->
         <bmc-logging-json.version>1.3.0</bmc-logging-json.version>
-        <datafaker.version>2.4.4</datafaker.version>
-        <lombok.version>1.18.38</lombok.version>
+        <datafaker.version>2.5.2</datafaker.version>
+        <lombok.version>1.18.42</lombok.version>
         <lombok.mapstruct-binding.version>0.2.0</lombok.mapstruct-binding.version>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <mockito.bom.version>5.20.0</mockito.bom.version>
         <wiremock.version>3.12.1</wiremock.version>
-        <wiremock.state-extension.version>0.8.2</wiremock.state-extension.version>
+        <wiremock.state-extension.version>0.9.3</wiremock.state-extension.version>
     </properties>
 
     <!--
@@ -55,6 +56,13 @@
                 <groupId>${quarkus.platform.group-id}</groupId>
                 <artifactId>quarkus-amazon-services-bom</artifactId>
                 <version>${quarkus.platform.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-bom</artifactId>
+                <version>${mockito.bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
